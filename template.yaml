@@ -1,0 +1,41 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  job-scraper
+
+  A basic programme to run job scraping on specific websites, developed from a sample SAM template
+
+# More info about Globals: https://github.com/awslabs/serverless-application-model/blob/master/docs/globals.rst
+Globals:
+  Function:
+    Timeout: 60
+
+Resources:
+  JobScraperFunction:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: job_scraper/
+      Handler: app.lambda_handler
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Role: arn:aws:iam::339713187712:role/Rosti_scraper_SES_access
+      Environment:
+        Variables:
+          SENDER_EMAIL: 'simon.budden@gmail.com'
+          RECIPIENT_EMAIL: 'simon.budden@gmail.com'
+      Events:
+        DailyTrigger:
+          Type: Schedule
+          Properties:
+            Schedule: cron(0 17 ? * MON-FRI)
+    Metadata:
+        BuildMethod: python3.11
+        BuildProperties:
+          PipDependencies:
+           - requirements.txt
+
+Outputs:
+  JobScraperFunction:
+    Description: "Job Scraper Lambda Function ARN"
+    Value: !GetAtt JobScraperFunction.Arn
