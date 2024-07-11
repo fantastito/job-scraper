@@ -3,10 +3,13 @@ from send_email import send_email
 
 def lambda_handler(event, context):
     
-    email_body = []
+    scraping_results = []
     
-    email_body.append(yoto_scraper())
+    scraping_results.append(yoto_scraper())
     # print(email_body)
+
+    #Convert list of strings into single string
+    email_body = '\n'.join(scraping_results)
 
     send_email(email_body)
     return {"statusCode": 200}
