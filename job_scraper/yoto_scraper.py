@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 
 def yoto_scraper():
+    #Get jobs page and handle errors
     url = "https://careers.yotoplay.com/"
     try:
         response = requests.get(url)
@@ -13,10 +14,22 @@ def yoto_scraper():
         # Any unexpected exceptions
         return {"statusCode": 500}
     
+    # Parse the page content
     soup = BeautifulSoup(response.content, "lxml")
-    # for link in soup.find(id="jobs_list_container"):
-    #     print(link.get('href'))
-    # return "that worked?"
-    print(soup.find(class_="jobs-container"))
 
-yoto_scraper()
+    #Extract only the current jobs section
+    jobs = soup.find(class_="jobs-container")
+    
+    #Find all the links
+    links = jobs.find_all('a')
+    
+    #Extract links and append to list
+    job_links = []
+
+    for link in links:
+        job_links.append(link.get('href'))
+        # print(link.get('href'))
+
+    return job_links
+
+# yoto_scraper()
