@@ -28,7 +28,7 @@ Resources:
         DailyTrigger:
           Type: Schedule
           Properties:
-            Schedule: cron(0 17 ? * MON-FRI)
+            Schedule: cron(0 17 ? * MON-FRI *)
     Metadata:
         BuildMethod: python3.11
         BuildProperties:
