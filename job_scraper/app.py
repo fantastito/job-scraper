@@ -1,5 +1,5 @@
 from yoto_scraper import yoto_scraper
-import send_email
+from send_email import send_email
 
 def lambda_handler(event, context):
     
